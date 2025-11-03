@@ -21,9 +21,10 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
-            ]
+            ],
+            path: "McWebview/Sources/McWebAnnotationMacros"
         ),
-        .target(name: "McWebAnnotation", dependencies: ["McWebAnnotationMacros"]),
-        .target(name: "McWebview", dependencies: ["McWebAnnotation"])
+        .target(name: "McWebAnnotation", dependencies: ["McWebAnnotationMacros"],path: "McWebview/Sources/McWebAnnotation"),
+        .target(name: "McWebview", dependencies: ["McWebAnnotation"],path: "McWebview/Sources/McWebview")
     ]
 )
