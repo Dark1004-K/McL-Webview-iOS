@@ -11,23 +11,27 @@ import Security
 @MainActor
 open class McKeyChain {
     private static var instance : McKeyChain?
+    private static let MCKEYCHAIN_PREF_KEY = "mc_keychain_preference"
     private static var name : String?
     public static func getInstance() -> McKeyChain {
         if instance == nil { instance = McKeyChain() }
         return instance!
     }
     
-    public static func initialization(appId : String) {
-        McKeyChain.name = "mcl_shared_prefs_\(appId)"
+    public static func initialization() {
+        McKeyChain.name = "mcl_shared_prefs_\(MCKEYCHAIN_PREF_KEY)"
     }
     
-    private init() {}
+    private init() {
+//        self.name = "mcl_shared_prefs_\(MCKEYCHAIN_PREF_KEY)"
+//        print("McKeyChain initialized with name: \(self.name)")
+    }
     
     public static func release() {
         self.instance = nil;
     }
     
-    func putString(value:String, key:String) {
+    public static  func putString(value:String, key:String) {
         guard let data = value.data(using: .utf8) else { return }
         let query:[CFString: Any]=[kSecClass: kSecClassGenericPassword, kSecAttrService: McKeyChain.name!, kSecAttrAccount: key, kSecValueData: data]
         
@@ -49,7 +53,7 @@ open class McKeyChain {
         }
     }
     
-    func getString(key:String) -> String? {
+    public static func getString(key:String) -> String? {
         let query:[CFString: Any]=[kSecClass: kSecClassGenericPassword, kSecAttrService: McKeyChain.name!, kSecAttrAccount : key, kSecMatchLimit : kSecMatchLimitOne, kSecReturnData: true]
      
         // 키 체인에 저장된 값을 읽어옴

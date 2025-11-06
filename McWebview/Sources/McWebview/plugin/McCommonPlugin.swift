@@ -42,14 +42,16 @@ open class McCommonPlugin : McWebPlugin {
     
     @McWebMethod(name:"getProperty")
     func getProperty(callbackId: String, key: String) {
-        McKeyChain.initialization(appId: McCommonPlugin.COMMONPLUGIN_PREF_KEY)
+        McKeyChain.initialization()
+//        McKeyChain.initialization(appId: McCommonPlugin.COMMONPLUGIN_PREF_KEY)
         let value = McKeyChain.getInstance().getString(key: key)
         super.sendResult(status: .success, callbackId: callbackId, param: McPropertyResultModel(key: key, value: value))
     }
 //    
     @McWebMethod(name:"setProperty")
     func setProperty(callbackId: String, key: String, value:String) {
-        McKeyChain.initialization(appId: McCommonPlugin.COMMONPLUGIN_PREF_KEY)
+        McKeyChain.initialization()
+//        McKeyChain.initialization(appId: McCommonPlugin.COMMONPLUGIN_PREF_KEY)
         McKeyChain.getInstance().putString(value: value, key: key)
         super.sendResult(status: .success, callbackId: callbackId, param: nil)
     }
