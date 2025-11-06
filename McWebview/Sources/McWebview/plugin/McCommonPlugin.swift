@@ -14,7 +14,7 @@ open class McCommonPlugin : McWebPlugin {
 //    public init() {}
     
     public var pluginDelegate: McCommonPluginDelegate?
-    public static let COMMONPLUGIN_PREF_KEY = "mc_common_preference"
+//    public static let COMMONPLUGIN_PREF_KEY = "mc_common_preference"
     
     @McWebMethod(name: "closeApp")
     func closeApp(callbackId: String) { // I/F 네이밍 변경

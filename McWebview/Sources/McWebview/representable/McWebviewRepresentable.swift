@@ -16,7 +16,8 @@ public struct McWebviewRepresentable: UIViewRepresentable {
         self._url = url
         self._webView = webView
         self._plugins = plugins
-        McKeyChain.initialization(appId: McCommonPlugin.COMMONPLUGIN_PREF_KEY)
+        McKeyChain.initialization()
+//        McKeyChain.initialization(appId: McCommonPlugin.COMMONPLUGIN_PREF_KEY)
     }
     
     public func makeUIView(context: Context) -> McWebView {

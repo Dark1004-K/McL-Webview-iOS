@@ -31,7 +31,7 @@ open class McKeyChain {
         self.instance = nil;
     }
     
-    public static  func putString(value:String, key:String) {
+    public func putString(value:String, key:String) {
         guard let data = value.data(using: .utf8) else { return }
         let query:[CFString: Any]=[kSecClass: kSecClassGenericPassword, kSecAttrService: McKeyChain.name!, kSecAttrAccount: key, kSecValueData: data]
         
@@ -53,7 +53,7 @@ open class McKeyChain {
         }
     }
     
-    public static func getString(key:String) -> String? {
+    public func getString(key:String) -> String? {
         let query:[CFString: Any]=[kSecClass: kSecClassGenericPassword, kSecAttrService: McKeyChain.name!, kSecAttrAccount : key, kSecMatchLimit : kSecMatchLimitOne, kSecReturnData: true]
      
         // 키 체인에 저장된 값을 읽어옴
@@ -72,7 +72,7 @@ open class McKeyChain {
         return nil
     }
     
-    public static func getString(teamId: String, key:String) -> String? {
+    public func getString(teamId: String, key:String) -> String? {
         let sKey = "\(teamId).\(key)"
         let query:[CFString: Any]=[
              kSecClass: kSecClassGenericPassword,
@@ -108,7 +108,7 @@ open class McKeyChain {
     }
     
     
-    func putDictionary(value:[String:Any?], key:String)
+    public func putDictionary(value:[String:Any?], key:String)
     {
         guard let json = try? JSONSerialization.data(withJSONObject: value, options:[]) else { return }
         let query:[CFString: Any]=[kSecClass: kSecClassGenericPassword, kSecAttrService: McKeyChain.name!, kSecAttrAccount: key, kSecValueData: json]
@@ -131,7 +131,7 @@ open class McKeyChain {
         }
     }
     
-    func getDictionary(key:String) -> [String:Any?]?
+    public func getDictionary(key:String) -> [String:Any?]?
     {
         let query:[CFString: Any]=[kSecClass: kSecClassGenericPassword, kSecAttrService: McKeyChain.name!, kSecAttrAccount : key, kSecMatchLimit : kSecMatchLimitOne, kSecReturnData: true]
      
