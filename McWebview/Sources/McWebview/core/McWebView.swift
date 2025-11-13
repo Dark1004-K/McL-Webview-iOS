@@ -18,18 +18,18 @@ open class McWebView : WKWebView
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         self.loadDefaultConfig()
+        print("Create WebView!!!!!! id:", ObjectIdentifier(self as AnyObject))
+        
     }
     
     public convenience init() {
         self.init(frame:.zero, configuration:WKWebViewConfiguration())
+        print("Create WebView!!!!!! convenience id:", ObjectIdentifier(self as AnyObject))
     }
-    
-//    required init?() {
-//        super.init()
-//    }
     
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
         super.init(frame: frame, configuration: configuration)
+        print("Create WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
         self.loadDefaultConfig()
     }
     
@@ -39,12 +39,14 @@ open class McWebView : WKWebView
         {
             self.configuration.userContentController.removeScriptMessageHandler(forName: plugin.name)
         }
+        print("release id:", ObjectIdentifier(self as AnyObject))
 //        MwKeyChain.release()
     }
 
     private func loadConfig(){
         self.uiDelegate = self
         self.navigationDelegate = self
+        print("loadConfig id:", ObjectIdentifier(self as AnyObject))
         
         //화면 비율 맞춤 설정
         self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -99,82 +101,15 @@ open class McWebView : WKWebView
         }
     }
     
-//    public func onBackPressed() {
-//        if(self.subWebview != nil) {
-//            if(self.subWebview?.webInfo?.type == "Issuer") {
-//                evaluateJavaScript("MwNativeApi.onBackPressed()", completionHandler: { (result, error) in })
-//            }
-//            let _ = self.closeSubWebview()
-//        } else if(self.govPrintWebview != nil) {
-//            let _ = self.closeGovDocsPrintWebview()
-//            evaluateJavaScript("MwNativeApi.onBackPressed()", completionHandler: { (result, error) in })
-//        } else {
-//            evaluateJavaScript("MwNativeApi.onBackPressed()", completionHandler: { (result, error) in })
-//            guard let plugin = findPlugIn(plugInName: "SpMyDataPlugin") as? MwMyDataPlugIn else { return }
-//            if let callbackId = plugin.getBackCallbackId() {
-//                sendResult(responseType: .success, callbackId: callbackId, param: nil)
-//            } else {
-//                historyBack()
-//            }
-//        }
-//    }
-//        
-//    public func onClosePressed() {
-//        if(self.subWebview != nil) {
-//            if(self.subWebview?.webInfo?.type == "Issuer") {
-//                guard let vc = self.topOfPageViewController() else {
-//                    return
-//                }
-//                
-//                let popup = MwPopUpBuilder()
-//                    .setTitle(title: "신분증명 발급 중단")
-//                    .setMessage(message: "신분증명 발급을 중단하시겠습니까?")
-//                    .setLeftButton(text: "발급중단",action: alertAction())
-//                    .setRightButton(text: "취소",action: nil)
-//                    .build()
-//                self.mwPopup = popup
-//                vc.view.addSubview(popup)
-//                popup.frame = vc.view.bounds
-//
-//            } else {
-//                let _ = self.closeSubWebview()
-//                guard let plugin = findPlugIn(plugInName: "SpCommonPlugin") as? MwCommonPlugIn else { return }
-//                plugin.restoreTitle()
-//            }
-//        } else if (self.govPrintWebview != nil) {
-////            print("closePressed!!!!!!!!!!!!!!!!!!!!!!!!!!!! ")
-//            let _ = self.closeGovDocsPrintWebview()
-//            evaluateJavaScript("MwNativeApi.onClosePressed()", completionHandler: { (result, error) in })
-//        } else {
-//            guard let plugin = findPlugIn(plugInName: "SpCommonPlugin") as? MwCommonPlugIn else { return }
-//            if (plugin.isClose ?? true) {
-//                plugin.closeWebview()
-//            }
-//            evaluateJavaScript("MwNativeApi.onClosePressed()", completionHandler: { (result, error) in })
-//        }
-//    }
-    
     public func addPlugin(plugin: McWebPlugin)
     {
-//        print("Add plugIn : " + plugIn.getPlugInName())
         plugin.webView = self
         self.plugins[plugin.name] = plugin
-//        plugIn.initFunction()
         self.configuration.userContentController.add(self, name: plugin.name)
     }
-//    
-//    public func addPlugIns(plugIns: [MwPlugIn])
-//    {
-//        for plugIn in plugIns {
-//            addPlugIn(plugIn: plugIn)
-//        }
-//    }
     
     public func addScheme(scheme: McScheme) {
-        print("addScheme!!!!!!!!!!!!!!!!!!!")
         self.schemes[scheme.name] = scheme
-        print("scheme: ",scheme)
-        print("self.schemes: ",self.schemes)
     }
     
     public func clearCache(cache:Bool,cookie:Bool) {
@@ -193,35 +128,16 @@ open class McWebView : WKWebView
         }
         
     }
-        
-    
-//    public func loadPost(url: String?, param:[UInt8]) {
-//        guard let urlObj = URL(string : url ?? "") else { return }
-//        var urlRequest = URLRequest(url: urlObj)
-//        urlRequest.httpMethod = "POST"
-//        urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//        let data = NSData(bytes: param, length: param.count)
-//        urlRequest.httpBody = Data(referencing: data)
-//        self.load(urlRequest)
-//    }
-    
-    
     
     public func loadUrl(url:String) {
         if let url = URL(string: url) {
             self.load(URLRequest(url : url))
         }
     }
-    
-//    public func initKeyChain() {
-//        McKeyChain.initialization(appId: COMMONPLUGIN_PREF_KEY)
-//    }
-
 }
 
 extension McWebView :WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        
         print("plug-in Calls : \(message.name)")
         guard let plugin = plugins[message.name] else { return }
         plugin.messageHandlers(message: message)
@@ -240,60 +156,36 @@ class LeakAvoider : NSObject, WKScriptMessageHandler {
 }
 
 extension McWebView : WKUIDelegate {
-    public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo,
-                 completionHandler: @escaping (String?) -> Void) {
+    public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo) async -> String? {
         print("MwWebKit : runJavaScriptTextInputPanelWithPrompt")
-        completionHandler(nil)
+        return defaultText
     }
     
-    public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String,
-                 initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+    public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo) async -> Bool {
+        print("McWebView confirm: \(message)")
+        return true
+    }
+    
+    public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo) async {
         print("McWebView alert: \(message)")
-        completionHandler()
     }
 }
 
+
 extension McWebView : WKNavigationDelegate  {
-    public func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("requesㅇㄴ후딘순다ㅣ쉰다쉰ㄷ")
-        guard let urlString = navigationAction.request.url?.absoluteString, let requestUrl = URL(string: urlString) else {
-             decisionHandler(.cancel)
-            return
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
+        guard let requestUrl = navigationAction.request.url else {
+            print("[McWebView] No URL in navigationAction. Cancelling.")
+            return .cancel
         }
-        print("requestUrl: ",requestUrl)
-        let scheme = requestUrl.scheme ?? ""
-        print("sdmgklsejfgeslksghesgset")
-        print("self.schemes: ",self.schemes)
-        if let handler = self.schemes[scheme] {
-            print("sdmgklsejfgeslkt")
-            handler.action(self, requestUrl)
-            decisionHandler(.cancel)
+        if let schemeName = requestUrl.scheme, let handler = self.schemes[schemeName] {
+            print("[McWebView] Handling custom scheme: \(schemeName) -> \(requestUrl)")
+            if handler.action(self, requestUrl) {
+                return .cancel
+            }
         }
         
-        
-        if (urlString.hasPrefix("https://itunes.apple.com")) {
-            UIApplication.shared.open(requestUrl, completionHandler: { (success) in
-                print("Itunes opened: \(success)") // Prints true
-            })
-            decisionHandler(.cancel)
-            return
-            
-        } else if (urlString.hasPrefix("tauthlink")
-            || urlString.hasPrefix("ktauthexternalcall")
-            || urlString.hasPrefix("upluscorporation")
-            || urlString.hasPrefix("niceipin2")) {
-            UIApplication.shared.open(requestUrl, completionHandler: { (success) in
-                print("Pass opened: \(success)") // Prints true
-            })
-            
-            decisionHandler(.cancel)
-            return
-        }
-        
-        decisionHandler(.allow)
-        return
+        return .allow
     }
     
     @available(iOS 9.0, *)
@@ -304,7 +196,10 @@ extension McWebView : WKNavigationDelegate  {
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
        //receivedError
         
+        print("errrr95952r952r2r92r95r29r25rror")
+        
         guard let lReceiverError = self.receivedError else {return}
         if ((lReceiverError(webView, error)) != nil) { return }
     }
 }
+

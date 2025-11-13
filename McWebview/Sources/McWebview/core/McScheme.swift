@@ -11,9 +11,9 @@ import Foundation
 
 open class McScheme {
     var name: String
-    var action: (_ webview: McWebView, _ url: URL) -> (Void)
+    var action: (_ webview: McWebView, _ url: URL) -> (Bool)
     
-    public init(name: String, action: @escaping (_ webview: McWebView, _ url: URL) -> Void) {
+    public init(name: String, action: @escaping (_ webview: McWebView, _ url: URL) -> Bool) {
         self.name = name
         self.action = action
     }

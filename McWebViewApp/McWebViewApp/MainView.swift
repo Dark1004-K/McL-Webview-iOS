@@ -9,12 +9,16 @@ import SwiftUI
 import McWebview
 
 struct MainView: View {
-    @State var webView: McWebView = McWebView()
-    @State var url: String = "http://192.168.0.42:3000"
-    @State var plugins: [McWebPlugin] = [McCommonPlugin()]
+    private var webView: McWebView? = McWebView()
+    @State private var url: String = "http://192.168.0.42:3000"
+    @State private var plugins: [McWebPlugin] = [McCommonPlugin()]
     var body: some View {
         VStack {
-            McWebviewRepresentable(webView:$webView, url: $url, plugins: $plugins)
+            if let webView {
+                McWebviewRepresentable(webView: .constant(webView), url: $url, plugins: $plugins)
+            } else {
+                ProgressView()
+            }
         }
         .padding()
     }

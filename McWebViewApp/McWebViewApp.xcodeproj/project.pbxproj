@@ -15,9 +15,22 @@
 		F2B452F82E7ACF240033BA36 /* McWebview */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = McWebview; path = ../McWebview; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		F23AACDC2EC5B3C20072D1EE /* Exceptions for "McWebViewApp" folder in "McWebViewApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F2B452E82E7ACE5D0033BA36 /* McWebViewApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F2B452EB2E7ACE5D0033BA36 /* McWebViewApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F23AACDC2EC5B3C20072D1EE /* Exceptions for "McWebViewApp" folder in "McWebViewApp" target */,
+			);
 			path = McWebViewApp;
 			sourceTree = "<group>";
 		};
@@ -269,6 +282,7 @@
 				DEVELOPMENT_TEAM = 7FUX59U7RV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = McWebViewApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -302,6 +316,7 @@
 				DEVELOPMENT_TEAM = 7FUX59U7RV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = McWebViewApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
