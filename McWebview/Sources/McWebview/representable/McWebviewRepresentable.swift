@@ -21,7 +21,6 @@ public struct McWebviewRepresentable: UIViewRepresentable {
     }
     
     public func makeUIView(context: Context) -> McWebView {
-//        print("45634213574685")
         guard let url = URL(string: url) else { return self.webView }
 //        let webView = McWebView()
 //        DispatchQueue.main.async {

@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import McWebview
 
 struct MainView: View {
+    @State var webView: McWebView = McWebView()
+    @State var url: String = "http://192.168.0.42:3000"
+    @State var plugins: [McWebPlugin] = [McCommonPlugin()]
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            McWebviewRepresentable(webView:$webView, url: $url, plugins: $plugins)
         }
         .padding()
     }

@@ -11,6 +11,10 @@ import WebKit
 open class McWebView : WKWebView
 {
     var plugins: [String:McWebPlugin] = [:]
+    var schemes: [String:McScheme] = [:]
+    
+    var receivedError: ((_ view: WKWebView?,  _ error: Error?) -> Bool)? = nil
+    
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         self.loadDefaultConfig()
@@ -39,7 +43,7 @@ open class McWebView : WKWebView
     }
 
     private func loadConfig(){
-//        self.uiDelegate = self
+        self.uiDelegate = self
         self.navigationDelegate = self
         
         //화면 비율 맞춤 설정
@@ -166,6 +170,13 @@ open class McWebView : WKWebView
 //        }
 //    }
     
+    public func addScheme(scheme: McScheme) {
+        print("addScheme!!!!!!!!!!!!!!!!!!!")
+        self.schemes[scheme.name] = scheme
+        print("scheme: ",scheme)
+        print("self.schemes: ",self.schemes)
+    }
+    
     public func clearCache(cache:Bool,cookie:Bool) {
         var dataType = NSSet()
         let date = NSDate(timeIntervalSince1970: 0)
@@ -206,66 +217,6 @@ open class McWebView : WKWebView
 //        McKeyChain.initialization(appId: COMMONPLUGIN_PREF_KEY)
 //    }
 
-    //MARK: - MwUiDelegateProtocol
-//    public func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
-//        guard let commonPlugin = self.findPlugIn(plugInName: "SpCommonPlugin") as? MwCommonPlugIn else { return }
-//        commonPlugin.getUiExtension()?.contactResult(param: nil,picker: picker)
-//        picker.dismiss(animated: true)
-//    }
-//    
-//    public func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
-//        guard let commonPlugin = self.findPlugIn(plugInName: "SpCommonPlugin") as? MwCommonPlugIn else { return }
-//        var item :[String:String?] = Dictionary()
-//        var itemArray:Array<Any> = []
-//        
-//        for i in 0..<contacts.count {
-//            var name = CNContactFormatter.string(from: contacts[i], style: .fullName)
-//            if (name == nil) {
-//                name = ""
-//            }
-//            item.updateValue(name, forKey: "name")
-//            
-//            if (contacts[i].phoneNumbers.isEmpty) {
-//                item.updateValue("", forKey: "phoneNum")
-//            } else {
-//                for num in contacts[i].phoneNumbers {
-//                    let phoneNum = num.value.stringValue
-//                    item.updateValue(phoneNum, forKey: "phoneNum")
-//                }
-//            }
-//            itemArray.append(item)
-//
-//        }
-//        commonPlugin.getUiExtension()?.contactResult(param: itemArray,picker: picker)
-//    }
-//    
-//    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        var fimage : UIImage?
-//        if let cropImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-//            fimage = cropImage
-//        } else if let originImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-//            fimage = originImage
-//        }
-//        guard let commonPlugin = self.findPlugIn(plugInName: "SpCommonPlugin") as? MwCommonPlugIn else { return }
-//        commonPlugin.getUiExtension()?.imageResult(image: fimage,picker: picker)
-//        picker.dismiss(animated: true)
-//            
-//    }
-//    public func imagePickerControllerCancel(_ picker: UIImagePickerController) {
-//        guard let commonPlugin = self.findPlugIn(plugInName: "SpCommonPlugin") as? MwCommonPlugIn else { return }
-//        commonPlugin.getUiExtension()?.imageResult(image: nil, picker: picker)
-//        picker.dismiss(animated: true)
-//    }
-    
-//    public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-//        controller.dismiss(animated: true)
-//    }
-    
-//    @available(iOS 12.0, *)
-//    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-//        let view = views?.getViewController()?.view
-//        return view?.window ?? ASPresentationAnchor()
-//    }
 }
 
 extension McWebView :WKScriptMessageHandler {
@@ -294,16 +245,33 @@ extension McWebView : WKUIDelegate {
         print("MwWebKit : runJavaScriptTextInputPanelWithPrompt")
         completionHandler(nil)
     }
+    
+    public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String,
+                 initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        print("McWebView alert: \(message)")
+        completionHandler()
+    }
 }
 
 extension McWebView : WKNavigationDelegate  {
     public func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        print("requesㅇㄴ후딘순다ㅣ쉰다쉰ㄷ")
         guard let urlString = navigationAction.request.url?.absoluteString, let requestUrl = URL(string: urlString) else {
              decisionHandler(.cancel)
             return
         }
+        print("requestUrl: ",requestUrl)
+        let scheme = requestUrl.scheme ?? ""
+        print("sdmgklsejfgeslksghesgset")
+        print("self.schemes: ",self.schemes)
+        if let handler = self.schemes[scheme] {
+            print("sdmgklsejfgeslkt")
+            handler.action(self, requestUrl)
+            decisionHandler(.cancel)
+        }
+        
         
         if (urlString.hasPrefix("https://itunes.apple.com")) {
             UIApplication.shared.open(requestUrl, completionHandler: { (success) in
@@ -331,5 +299,12 @@ extension McWebView : WKNavigationDelegate  {
     @available(iOS 9.0, *)
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         webView.reload()
+    }
+    
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+       //receivedError
+        
+        guard let lReceiverError = self.receivedError else {return}
+        if ((lReceiverError(webView, error)) != nil) { return }
     }
 }

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EE4917AC2EC4C6FE0004B026 /* McWebview in Frameworks */ = {isa = PBXBuildFile; productRef = EE4917AB2EC4C6FE0004B026 /* McWebview */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F2B452E92E7ACE5D0033BA36 /* McWebViewApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = McWebViewApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2B452F82E7ACF240033BA36 /* McWebview */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = McWebview; path = ../McWebview; sourceTree = SOURCE_ROOT; };
@@ -24,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE4917AC2EC4C6FE0004B026 /* McWebview in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +72,7 @@
 			);
 			name = McWebViewApp;
 			packageProductDependencies = (
+				EE4917AB2EC4C6FE0004B026 /* McWebview */,
 			);
 			productName = McWebViewApp;
 			productReference = F2B452E92E7ACE5D0033BA36 /* McWebViewApp.app */;
@@ -96,6 +102,9 @@
 			);
 			mainGroup = F2B452E02E7ACE5D0033BA36;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EE4917AA2EC4C6FE0004B026 /* XCLocalSwiftPackageReference "../../McL-Webview-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F2B452EA2E7ACE5D0033BA36 /* Products */;
 			projectDirPath = "";
@@ -270,7 +279,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bdgen.mcwebview.McWebViewApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -303,7 +312,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bdgen.mcwebview.McWebViewApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -338,6 +347,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		EE4917AA2EC4C6FE0004B026 /* XCLocalSwiftPackageReference "../../McL-Webview-iOS" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../../McL-Webview-iOS";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EE4917AB2EC4C6FE0004B026 /* McWebview */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = McWebview;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F2B452E12E7ACE5D0033BA36 /* Project object */;
 }
