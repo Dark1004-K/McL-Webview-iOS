@@ -101,6 +101,11 @@ open class McWebView : WKWebView
         }
     }
     
+    public func loadUrl(_ url:String) {
+        guard let url = URL(string: url) else { return }
+        self.load(URLRequest(url: url))
+    }
+    
     public func addPlugin(plugin: McWebPlugin)
     {
         plugin.webView = self

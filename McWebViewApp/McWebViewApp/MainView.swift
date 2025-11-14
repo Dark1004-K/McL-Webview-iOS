@@ -15,7 +15,16 @@ struct MainView: View {
     var body: some View {
         VStack {
             if let webView {
-                McWebviewRepresentable(webView: .constant(webView), url: $url, plugins: $plugins)
+                McWebviewRepresentable(webView: .constant(webView))
+                .onAppear {
+                    for plugin in self.plugins {
+                        self.webView?.addPlugin(plugin:plugin)
+                    }
+                    self.webView?.loadUrl(url)
+                }.onDisappear() {
+                    self.webView?.release()
+//                    self.webView = nil
+                }
             } else {
                 ProgressView()
             }
