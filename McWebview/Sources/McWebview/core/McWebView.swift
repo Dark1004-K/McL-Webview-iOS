@@ -18,18 +18,18 @@ open class McWebView : WKWebView
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         self.loadDefaultConfig()
-        print("Create WebView!!!!!! id:", ObjectIdentifier(self as AnyObject))
+        print("kkak : Create WebView!!!!!! id:", ObjectIdentifier(self as AnyObject))
         
     }
     
     public convenience init() {
         self.init(frame:.zero, configuration:WKWebViewConfiguration())
-        print("Create WebView!!!!!! convenience id:", ObjectIdentifier(self as AnyObject))
+        print("kkak : Create WebView!!!!!! convenience id:", ObjectIdentifier(self as AnyObject))
     }
     
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
         super.init(frame: frame, configuration: configuration)
-        print("Create WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
+        print("kkak : Create WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
         self.loadDefaultConfig()
     }
     
@@ -39,14 +39,14 @@ open class McWebView : WKWebView
         {
             self.configuration.userContentController.removeScriptMessageHandler(forName: plugin.name)
         }
-        print("release id:", ObjectIdentifier(self as AnyObject))
+        print("kkak :  release id:", ObjectIdentifier(self as AnyObject))
 //        MwKeyChain.release()
     }
 
     private func loadConfig(){
         self.uiDelegate = self
         self.navigationDelegate = self
-        print("loadConfig id:", ObjectIdentifier(self as AnyObject))
+        print("kkak : loadConfig id:", ObjectIdentifier(self as AnyObject))
         
         //화면 비율 맞춤 설정
         self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
