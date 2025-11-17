@@ -13,7 +13,7 @@ open class McWebView : WKWebView
     var plugins: [String:McWebPlugin] = [:]
     var schemes: [String:McScheme] = [:]
     
-    var receivedError: ((_ view: WKWebView?,  _ error: Error?) -> Bool)? = nil
+    public var receivedError: ((_ view: McWebView?,  _ error: Error?) -> Void)? = nil
     
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -200,7 +200,7 @@ extension McWebView : WKNavigationDelegate  {
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         guard let lReceiverError = self.receivedError else {return}
-        if ((lReceiverError(webView, error)) != nil) { return }
+        lReceiverError(webView as! McWebView, error)
     }
 }
 

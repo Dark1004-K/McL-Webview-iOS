@@ -24,6 +24,12 @@ final class WebViewModel: ObservableObject {
     deinit {
         // ViewModel이 해제될 때 McWebView도 해제되도록 보조할 수 있습니다.
     }
+    
+    
+    func onError(_ view: McWebView?,  _ error: Error?) -> Void {
+        print("kkak : 에러발생!!!")
+    }
+
 }
 
 
@@ -32,11 +38,12 @@ struct MainView: View {
     @StateObject private var viewModel = WebViewModel()
     @State private var url: String = "http://192.168.0.42:3000"
     @State private var plugins: [McWebPlugin] = [McCommonPlugin()]
+    
     var body: some View {
         VStack {
 //                McWebviewRepresentable(webView: .constant(webView))
 //             let webView {
-            McWebviewRepresentable(webView:$viewModel.webView)
+            McWebviewRepresentable(webView:$viewModel.webView, onReceivedError: viewModel.onError)
                 .onDisappear(){
 //                    print("kkak : dis어피어!!!!")
 //                    plugins.forEach { plugin in
@@ -45,7 +52,7 @@ struct MainView: View {
 //                    plugins.removeAll()
                 }
                 .onAppear {
-                    print("kkak : on어피어!!!!")
+//                    viewModel.webView?.receivedError = viewModel.onError
                     self.plugins.forEach { plugin in
                         viewModel.webView?.addPlugin(plugin: plugin)
                     }
@@ -59,6 +66,7 @@ struct MainView: View {
         .padding()
         
     }
+
 }
 
 #Preview {
