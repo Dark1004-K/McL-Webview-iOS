@@ -16,6 +16,12 @@ open class McCommonPlugin : McWebPlugin {
     public var pluginDelegate: McCommonPluginDelegate?
 //    public static let COMMONPLUGIN_PREF_KEY = "mc_common_preference"
     
+    
+    override public func release() {
+        McKeyChain.release()
+        super.release()
+    }
+    
     @McWebMethod(name: "closeApp")
     func closeApp(callbackId: String) { // I/F 네이밍 변경
 //        DispatchQueue.main.async {
@@ -26,7 +32,7 @@ open class McCommonPlugin : McWebPlugin {
     
     @McWebMethod(name:"loadUrl")
     func loadUrl(callbackId: String, url: String) {
-        super.webView?.loadUrl(url: url)
+        super.webView?.loadUrl(url)
         super.sendResult(status: .success, callbackId: callbackId, param: nil)
     }
     

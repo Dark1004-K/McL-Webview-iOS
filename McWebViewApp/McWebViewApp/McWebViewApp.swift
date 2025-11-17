@@ -11,7 +11,7 @@ import SwiftUI
 struct McWebViewApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            StartView()
         }
     }
 }

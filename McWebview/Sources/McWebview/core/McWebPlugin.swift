@@ -10,12 +10,17 @@ import WebKit
 
 @MainActor
 open class McWebPlugin {
-    public var webView: McWebView?
+    public weak var webView: McWebView?
     public var name: String
     public var functions: [String: McWebFunction] = [:]
     
     public init(name: String) {
         self.name = name
+    }
+    
+    public func release() {
+        functions.removeAll()
+        self.webView = nil
     }
     
     public func sendResult(status :McWebResponseStatus, callbackId :String, param: McWebParam?) {

@@ -18,35 +18,41 @@ open class McWebView : WKWebView
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         self.loadDefaultConfig()
-        print("kkak : Create WebView!!!!!! id:", ObjectIdentifier(self as AnyObject))
-        
+//        print("kkak : Create WebView!!!!!! id:", ObjectIdentifier(self as AnyObject))
     }
     
     public convenience init() {
         self.init(frame:.zero, configuration:WKWebViewConfiguration())
-        print("kkak : Create WebView!!!!!! convenience id:", ObjectIdentifier(self as AnyObject))
+//        print("kkak : Create WebView!!!!!! convenience id:", ObjectIdentifier(self as AnyObject))
     }
     
     override init(frame: CGRect, configuration: WKWebViewConfiguration) {
         super.init(frame: frame, configuration: configuration)
-        print("kkak : Create WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
+//        print("kkak : Create WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
         self.loadDefaultConfig()
+    }
+    
+    deinit {
+//        print("kkak : deinit WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
     }
     
     public func release() {
         self.stopLoading()
+        self.navigationDelegate = nil
+        self.scrollView.delegate = nil
         for plugin in plugins.values
         {
             self.configuration.userContentController.removeScriptMessageHandler(forName: plugin.name)
+            plugin.release()
         }
-        print("kkak :  release id:", ObjectIdentifier(self as AnyObject))
+//        print("kkak : release id:", ObjectIdentifier(self as AnyObject))
 //        MwKeyChain.release()
     }
 
     private func loadConfig(){
         self.uiDelegate = self
         self.navigationDelegate = self
-        print("kkak : loadConfig id:", ObjectIdentifier(self as AnyObject))
+//        print("kkak : loadConfig id:", ObjectIdentifier(self as AnyObject))
         
         //화면 비율 맞춤 설정
         self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -133,32 +139,26 @@ open class McWebView : WKWebView
         }
         
     }
-    
-    public func loadUrl(url:String) {
-        if let url = URL(string: url) {
-            self.load(URLRequest(url : url))
-        }
-    }
 }
 
 extension McWebView :WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("plug-in Calls : \(message.name)")
+//        print("plug-in Calls : \(message.name)")
         guard let plugin = plugins[message.name] else { return }
         plugin.messageHandlers(message: message)
     }
 }
 
-class LeakAvoider : NSObject, WKScriptMessageHandler {
-    weak var delegate : WKScriptMessageHandler?
-    init(delegate:WKScriptMessageHandler) {
-        self.delegate = delegate
-        super.init()
-    }
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        self.delegate?.userContentController(userContentController, didReceive: message)
-    }
-}
+//class LeakAvoider : NSObject, WKScriptMessageHandler {
+//    weak var delegate : WKScriptMessageHandler?
+//    init(delegate:WKScriptMessageHandler) {
+//        self.delegate = delegate
+//        super.init()
+//    }
+//    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+//        self.delegate?.userContentController(userContentController, didReceive: message)
+//    }
+//}
 
 extension McWebView : WKUIDelegate {
     public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo) async -> String? {
@@ -184,7 +184,7 @@ extension McWebView : WKNavigationDelegate  {
             return .cancel
         }
         if let schemeName = requestUrl.scheme, let handler = self.schemes[schemeName] {
-            print("[McWebView] Handling custom scheme: \(schemeName) -> \(requestUrl)")
+//            print("[McWebView] Handling custom scheme: \(schemeName) -> \(requestUrl)")
             if handler.action(self, requestUrl) {
                 return .cancel
             }
@@ -199,10 +199,6 @@ extension McWebView : WKNavigationDelegate  {
     }
     
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-       //receivedError
-        
-        print("errrr95952r952r2r92r95r29r25rror")
-        
         guard let lReceiverError = self.receivedError else {return}
         if ((lReceiverError(webView, error)) != nil) { return }
     }
