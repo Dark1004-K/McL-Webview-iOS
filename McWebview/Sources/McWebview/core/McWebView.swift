@@ -33,13 +33,14 @@ open class McWebView : WKWebView
     }
     
     deinit {
-//        print("kkak : deinit WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
+        print("kkak : deinit WebView!!!!!! frame id:", ObjectIdentifier(self as AnyObject))
     }
     
     public func release() {
         self.stopLoading()
         self.navigationDelegate = nil
         self.scrollView.delegate = nil
+        self.receivedError = nil
         for plugin in plugins.values
         {
             self.configuration.userContentController.removeScriptMessageHandler(forName: plugin.name)
