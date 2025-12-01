@@ -71,6 +71,9 @@ open class McWebView : WKWebView
         self.configuration.websiteDataStore = .default()
         self.configuration.mediaTypesRequiringUserActionForPlayback = .all
         self.scrollView.contentInsetAdjustmentBehavior = .never
+        self.scrollView.pinchGestureRecognizer?.isEnabled = false
+        self.scrollView.minimumZoomScale = 1.0
+        self.scrollView.maximumZoomScale = 1.0
         
         if #available(iOS 14.0, *) {
             configuration.limitsNavigationsToAppBoundDomains = true
