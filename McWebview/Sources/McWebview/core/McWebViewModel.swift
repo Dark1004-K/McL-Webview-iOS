@@ -28,9 +28,10 @@ public class McWebViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     public func setSchemes(schemes: [McScheme]) {
         schemes.forEach { scheme in
-            webView?.addScheme(scheme: scheme)
+            self.webView?.addScheme(scheme: scheme)
         }
     }
     
