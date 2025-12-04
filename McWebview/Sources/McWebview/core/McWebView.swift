@@ -46,8 +46,6 @@ open class McWebView : WKWebView
             self.configuration.userContentController.removeScriptMessageHandler(forName: plugin.name)
             plugin.release()
         }
-//        print("kkak : release id:", ObjectIdentifier(self as AnyObject))
-//        MwKeyChain.release()
     }
 
     private func loadConfig(){

@@ -28,6 +28,12 @@ public class McWebViewModel: ObservableObject {
         }
     }
     
+    public func setSchemes(schemes: [McScheme]) {
+        schemes.forEach { scheme in
+            webView?.addScheme(scheme: scheme)
+        }
+    }
+    
     public func release() {
         self.webView?.release()
     }

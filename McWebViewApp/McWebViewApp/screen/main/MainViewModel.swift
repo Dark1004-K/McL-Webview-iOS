@@ -27,6 +27,8 @@ class MainViewModel: ObservableObject {
         self.webViewModel.loadUrl(url:self.url)
     }
     
+    
+    
     public func releaseWebView() {
         self.webViewModel.release()
     }
