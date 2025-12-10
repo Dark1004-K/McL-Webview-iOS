@@ -20,7 +20,8 @@ struct StartView: View {
                 }) {
                     Text("누르면 좋아요!!")
                 }
-            }.navigationDestination(isPresented: $next) { MainView() }
+            }.navigationDestination(isPresented: $next) { MainView()
+            }
         }
         
     }
