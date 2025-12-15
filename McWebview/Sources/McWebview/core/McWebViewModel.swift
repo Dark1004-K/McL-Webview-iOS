@@ -8,7 +8,7 @@
 import Foundation
 
 public class McWebViewModel: ObservableObject {
-    @Published var webView: McWebView?
+    @Published public var webView: McWebView?
     var receivedError: onReceivedError? = nil
     
     public init() {}
