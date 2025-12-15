@@ -20,7 +20,7 @@ open class McWebPlugin {
     
     public func release() {
         functions.removeAll()
-        self.webView = nil
+//        self.webView = nil
     }
     
     public func sendResult(status :McWebResponseStatus, callbackId :String, param: McWebParam?) {

@@ -44,7 +44,7 @@ open class McWebView : WKWebView
         for plugin in plugins.values
         {
             self.configuration.userContentController.removeScriptMessageHandler(forName: plugin.name)
-            plugin.release()
+//            plugin.release()
         }
     }
 
