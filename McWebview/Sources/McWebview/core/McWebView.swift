@@ -70,6 +70,7 @@ open class McWebView : WKWebView
         self.configuration.websiteDataStore = .default()
         self.configuration.mediaTypesRequiringUserActionForPlayback = .all
         self.scrollView.contentInsetAdjustmentBehavior = .never
+        self.scrollView.isScrollEnabled = false
         self.scrollView.pinchGestureRecognizer?.isEnabled = false
         self.scrollView.minimumZoomScale = 1.0
         self.scrollView.maximumZoomScale = 1.0
